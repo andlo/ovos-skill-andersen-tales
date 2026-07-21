@@ -59,6 +59,14 @@ SOURCE_NAME = "andersenstories.com"
 # for e.g. 'article' or 'poem' should get no response from us
 CONTENT_TYPE = "story"
 
+# andersenstories.com only offers these 7 languages - confirmed against
+# the site itself (see andlo/ovos-skill-fairytales#31). This provider
+# does NOT translate (unlike ovos-skill-ovosblog/ovos-skill-arxiv-papers)
+# - a device set to any other language gets no response at all, decided
+# once at load time (see initialize()) rather than repeatedly per search.
+SUPPORTED_LANGUAGES = {"da", "en", "de", "es", "fr", "it", "nl"}
+
+
 class AndersenTales(OVOSSkill):
 
     INDEX_CACHE_TTL = 60 * 60 * 24 * 7  # 7 days
@@ -75,6 +83,16 @@ class AndersenTales(OVOSSkill):
         )
 
     def initialize(self):
+        lang = self.lang.split("-")[0]
+        if lang not in SUPPORTED_LANGUAGES:
+            self.log.info(
+                f"{self.skill_id}: device language '{self.lang}' is not one of "
+                f"{sorted(SUPPORTED_LANGUAGES)} that andersenstories.com supports, "
+                f"and this provider does not translate - skill will stay inert "
+                f"(no bus events registered, index not built)."
+            )
+            self.index = {}
+            return
         self.index = {}
         # in-memory cache of already-fetched story text, keyed by URL
         self._story_text_cache = {}
@@ -158,7 +176,9 @@ class AndersenTales(OVOSSkill):
 
     def update_index(self):
         # andersenstories.com only offers these 7 languages - confirmed
-        # against the site itself (see andlo/ovos-skill-fairytales#31)
+        # against the site itself (see andlo/ovos-skill-fairytales#31).
+        # initialize() already checked self.lang is in SUPPORTED_LANGUAGES
+        # before this is ever called, so no fallback is needed here.
         url_andersen = {'da': 'https://www.andersenstories.com/da/andersen_fortaellinger/',
                         'en': 'https://www.andersenstories.com/en/andersen_fairy-tales/',
                         'de': 'https://www.andersenstories.com/de/andersen_maerchen/',
@@ -167,8 +187,6 @@ class AndersenTales(OVOSSkill):
                         'it': 'https://www.andersenstories.com/it/andersen_fiabe/',
                         'nl': 'https://www.andersenstories.com/nl/andersen_sprookjes/'}
         lang = self.lang.split("-")[0]
-        if lang not in url_andersen:
-            lang = "en"
         self.index = self.get_index(url_andersen[lang] + "list")
 
     def _matches_collection_hint(self, hint):

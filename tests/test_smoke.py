@@ -1,4 +1,4 @@
-"""Smoke tests + language fallback in update_index()."""
+"""Smoke tests + the load-time language gate in initialize()."""
 from unittest.mock import MagicMock
 
 from conftest import AndersenTales, StoryFetchError
@@ -14,15 +14,28 @@ def test_andersen_tales_is_an_ovos_skill():
     assert issubclass(AndersenTales, OVOSSkill)
 
 
-def test_update_index_falls_back_to_english_for_unsupported_language(skill, monkeypatch):
-    monkeypatch.setattr(type(skill), "lang", "xx-xx", raising=False)
-    requested_urls = []
+def test_initialize_stays_inert_for_unsupported_language(skill, monkeypatch):
+    """The key behavior requested: don't just decline searches at
+    runtime - never even build the index or register bus events at all
+    for a language this provider can't serve (and doesn't translate)."""
+    monkeypatch.setattr(type(skill), "lang", "pl-pl", raising=False)
+    skill.refresh_index = MagicMock()
+    skill.add_event = MagicMock()
 
-    def fake_get_index(url):
-        requested_urls.append(url)
-        return {}
+    skill.initialize()
 
-    skill.get_index = fake_get_index
-    skill.update_index()
+    skill.refresh_index.assert_not_called()
+    skill.add_event.assert_not_called()
+    assert skill.index == {}
 
-    assert requested_urls == ["https://www.andersenstories.com/en/andersen_fairy-tales/list"]
+
+def test_initialize_loads_normally_for_supported_language(skill, monkeypatch):
+    monkeypatch.setattr(type(skill), "lang", "da-dk", raising=False)
+    skill.refresh_index = MagicMock()
+    skill.add_event = MagicMock()
+
+    skill.initialize()
+
+    skill.refresh_index.assert_called_once()
+    assert skill.add_event.call_count == 2
+

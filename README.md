@@ -23,8 +23,15 @@ pip install ovos-skill-andersen-tales ovos-common-reading-pipeline-plugin
 ## Languages
 
 Sourced live from [andersenstories.com](https://www.andersenstories.com/),
-which offers exactly 7 languages: EN, DA, DE, ES, FR, IT, NL. Falls back to
-English for any other device language.
+which offers exactly 7 languages: EN, DA, DE, ES, FR, IT, NL.
+
+**This provider does not translate.** On any other device language, it
+doesn't just decline to answer searches - it **never loads at all**:
+`initialize()` checks the device's language against `SUPPORTED_LANGUAGES`
+before building any index or registering any bus events, and logs a
+clear message if the language isn't supported, rather than silently
+serving English (or any other) content. Set your device to one of the 7
+supported languages to use this provider.
 
 ## Collection hints
 
