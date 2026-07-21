@@ -1,0 +1,12 @@
+{
+  "skill_id": "ovos-skill-andersen-tales.andlo",
+  "source": "https://github.com/andlo/ovos-skill-andersen-tales",
+  "package_name": "ovos-skill-andersen-tales",
+  "pip_spec": "ovos-skill-andersen-tales",
+  "license": "GPL-3.0-or-later",
+  "author": "andlo",
+  "name": "Andersen Tales (provider)",
+  "description": "Hans Christian Andersen fairy tales provider for ovos-skill-common-tales. No standalone voice interface - install ovos-skill-common-tales too.",
+  "examples": [],
+  "tags": ["entertainment", "stories", "fairytales", "andersen", "provider"]
+}
