@@ -1,7 +1,10 @@
-# Andersen Tales (provider)
+# <img src='story-512.png' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> Andersen Tales (provider)
 
 A *provider* skill for [ovos-skill-common-tales](https://github.com/andlo/ovos-skill-common-tales),
 delivering Hans Christian Andersen's fairy tales.
+
+_"Life itself is the most wonderful fairy tale of all."_
+— Hans Christian Andersen
 
 [![Tests](https://github.com/andlo/ovos-skill-andersen-tales/actions/workflows/test.yml/badge.svg)](https://github.com/andlo/ovos-skill-andersen-tales/actions/workflows/test.yml)
 [![PyPI version](https://img.shields.io/pypi/v/ovos-skill-andersen-tales.svg)](https://pypi.org/project/ovos-skill-andersen-tales/)
@@ -10,8 +13,7 @@ delivering Hans Christian Andersen's fairy tales.
 > intents and never speaks. It only answers
 > [ovos.common_tales.* bus messages](https://github.com/andlo/ovos-skill-common-tales#the-ovoscommon_tales-bus-protocol),
 > so you also need **ovos-skill-common-tales** installed for it to be
-> useful at all. If you want a single self-contained Andersen/Grimm
-> skill instead, see [ovos-skill-fairytales](https://github.com/andlo/ovos-skill-fairytales).
+> useful at all.
 
 ## Install
 ```bash
