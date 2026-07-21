@@ -1,6 +1,6 @@
 # <img src='story-512.png' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> Andersen Tales (provider)
 
-A *provider* skill for [ovos-skill-common-tales](https://github.com/andlo/ovos-skill-common-tales),
+A *provider* skill for [ovos-skill-common-reading](https://github.com/andlo/ovos-skill-common-reading),
 delivering Hans Christian Andersen's fairy tales.
 
 _"Life itself is the most wonderful fairy tale of all."_
@@ -11,13 +11,13 @@ _"Life itself is the most wonderful fairy tale of all."_
 
 > **This skill has no standalone voice interface.** It registers no
 > intents and never speaks. It only answers
-> [ovos.common_tales.* bus messages](https://github.com/andlo/ovos-skill-common-tales#the-ovoscommon_tales-bus-protocol),
-> so you also need **ovos-skill-common-tales** installed for it to be
+> [ovos.common_reading.* bus messages](https://github.com/andlo/ovos-skill-common-reading#the-ovoscommon_reading-bus-protocol),
+> so you also need **ovos-skill-common-reading** installed for it to be
 > useful at all.
 
 ## Install
 ```bash
-pip install ovos-skill-andersen-tales ovos-skill-common-tales
+pip install ovos-skill-andersen-tales ovos-skill-common-reading
 ```
 
 ## Languages
@@ -31,6 +31,12 @@ English for any other device language.
 Responds to `collection_hint` values like "andersen", "hans christian
 andersen", "h c andersen", "h.c. andersen", matched fuzzily (see
 `COLLECTION_ALIASES` in `__init__.py`).
+
+## Content type
+
+Always identifies as `content_type: "story"`. A search with a
+`content_type` hint for anything else (e.g. "article", "poem") gets no
+response from this provider.
 
 ## Credits
 

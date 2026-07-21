@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ---
 
-Provider skill for ovos-skill-common-tales: implements the
-ovos.common_tales.* bus protocol and registers NO intents of its own.
-See https://github.com/andlo/ovos-skill-common-tales for the full
+Provider skill for ovos-skill-common-reading: implements the
+ovos.common_reading.* bus protocol and registers NO intents of its own.
+See https://github.com/andlo/ovos-skill-common-reading for the full
 protocol, and why this skill has no standalone voice interface - it is
 not meant to be used without the orchestrator installed.
 """
@@ -41,11 +41,11 @@ class StoryFetchError(Exception):
     from andersenstories.com."""
 
 
-# ovos.common_tales.* bus protocol - see ovos-skill-common-tales/README.md
-COMMON_TALES_SEARCH = "ovos.common_tales.search"
-COMMON_TALES_SEARCH_RESPONSE = "ovos.common_tales.search.response"
-COMMON_TALES_FETCH_STORY = "ovos.common_tales.fetch_story"  # + ".{this_skill_id}"
-COMMON_TALES_FETCH_STORY_RESPONSE = "ovos.common_tales.fetch_story.response"
+# ovos.common_reading.* bus protocol - see ovos-skill-common-reading/README.md
+COMMON_READING_SEARCH = "ovos.common_reading.search"
+COMMON_READING_SEARCH_RESPONSE = "ovos.common_reading.search.response"
+COMMON_READING_FETCH_CONTENT = "ovos.common_reading.fetch_content"  # + ".{this_skill_id}"
+COMMON_READING_FETCH_CONTENT_RESPONSE = "ovos.common_reading.fetch_content.response"
 
 # names a user might call this collection via 'collection_hint' - matched
 # fuzzily against, not required to be exact
@@ -55,7 +55,9 @@ COLLECTION_HINT_THRESHOLD = 0.85
 AUTHOR_NAME = "Hans Christian Andersen"
 COLLECTION_NAME = "Andersen's Fairy Tales"
 SOURCE_NAME = "andersenstories.com"
-
+# this provider only ever offers fairy tales - a content_type hint asking
+# for e.g. 'article' or 'poem' should get no response from us
+CONTENT_TYPE = "story"
 
 class AndersenTales(OVOSSkill):
 
@@ -77,8 +79,8 @@ class AndersenTales(OVOSSkill):
         # in-memory cache of already-fetched story text, keyed by URL
         self._story_text_cache = {}
         self.refresh_index()
-        self.add_event(COMMON_TALES_SEARCH, self.handle_search)
-        self.add_event(f"{COMMON_TALES_FETCH_STORY}.{self.skill_id}", self.handle_fetch_story)
+        self.add_event(COMMON_READING_SEARCH, self.handle_search)
+        self.add_event(f"{COMMON_READING_FETCH_CONTENT}.{self.skill_id}", self.handle_fetch_content)
 
     def _index_cache_filename(self):
         lang = self.lang.split("-")[0]
@@ -175,12 +177,20 @@ class AndersenTales(OVOSSkill):
         _, score = match_one(hint.lower(), COLLECTION_ALIASES)
         return score >= COLLECTION_HINT_THRESHOLD
 
+    def _matches_content_type(self, content_type):
+        if not content_type:
+            return True
+        return content_type.lower() == CONTENT_TYPE
+
     def handle_search(self, message):
         if not self.index:
             return
         collection_hint = message.data.get("collection_hint")
         if not self._matches_collection_hint(collection_hint):
             return  # this search isn't aimed at us - stay silent
+        content_type = message.data.get("content_type")
+        if not self._matches_content_type(content_type):
+            return  # asking for a kind of content we don't offer
 
         phrase = message.data.get("phrase")
         if phrase:
@@ -193,9 +203,9 @@ class AndersenTales(OVOSSkill):
         else:
             return  # no phrase and no hint - nothing to go on
 
-        self.bus.emit(message.reply(COMMON_TALES_SEARCH_RESPONSE, {
+        self.bus.emit(message.reply(COMMON_READING_SEARCH_RESPONSE, {
             "skill_id": self.skill_id,
-            "story_id": title,
+            "content_id": title,
             "title": title,
             "author": AUTHOR_NAME,
             "collection": COLLECTION_NAME,
@@ -203,17 +213,17 @@ class AndersenTales(OVOSSkill):
             "confidence": confidence,
         }))
 
-    def handle_fetch_story(self, message):
-        story_id = message.data.get("story_id")
-        url = self.index.get(story_id)
+    def handle_fetch_content(self, message):
+        content_id = message.data.get("content_id")
+        url = self.index.get(content_id)
         if not url:
-            self.bus.emit(message.reply(COMMON_TALES_FETCH_STORY_RESPONSE, {"paragraphs": []}))
+            self.bus.emit(message.reply(COMMON_READING_FETCH_CONTENT_RESPONSE, {"paragraphs": []}))
             return
         try:
             text = self.get_story(url)
         except StoryFetchError as e:
-            self.log.error(f"Could not fetch story '{story_id}': {e}")
-            self.bus.emit(message.reply(COMMON_TALES_FETCH_STORY_RESPONSE, {"paragraphs": []}))
+            self.log.error(f"Could not fetch story '{content_id}': {e}")
+            self.bus.emit(message.reply(COMMON_READING_FETCH_CONTENT_RESPONSE, {"paragraphs": []}))
             return
         paragraphs = [p for p in text.split('\n\n') if p.strip()]
-        self.bus.emit(message.reply(COMMON_TALES_FETCH_STORY_RESPONSE, {"paragraphs": paragraphs}))
+        self.bus.emit(message.reply(COMMON_READING_FETCH_CONTENT_RESPONSE, {"paragraphs": paragraphs}))
