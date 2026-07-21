@@ -1,6 +1,6 @@
 # <img src='story-512.png' card_color='#40DBB0' width='50' height='50' style='vertical-align:bottom'/> Andersen Tales (provider)
 
-A *provider* skill for [ovos-skill-common-reading](https://github.com/andlo/ovos-skill-common-reading),
+A *provider* skill for [ovos-common-reading-pipeline-plugin](https://github.com/andlo/ovos-common-reading-pipeline-plugin),
 delivering Hans Christian Andersen's fairy tales.
 
 _"Life itself is the most wonderful fairy tale of all."_
@@ -11,13 +11,13 @@ _"Life itself is the most wonderful fairy tale of all."_
 
 > **This skill has no standalone voice interface.** It registers no
 > intents and never speaks. It only answers
-> [ovos.common_reading.* bus messages](https://github.com/andlo/ovos-skill-common-reading#the-ovoscommon_reading-bus-protocol),
-> so you also need **ovos-skill-common-reading** installed for it to be
-> useful at all.
+> [ovos.common_reading.* bus messages](https://github.com/andlo/ovos-common-reading-pipeline-plugin#the-ovoscommon_reading-bus-protocol),
+> so you also need **ovos-common-reading-pipeline-plugin** installed and
+> added to your pipeline config for it to be useful at all.
 
 ## Install
 ```bash
-pip install ovos-skill-andersen-tales ovos-skill-common-reading
+pip install ovos-skill-andersen-tales ovos-common-reading-pipeline-plugin
 ```
 
 ## Languages
