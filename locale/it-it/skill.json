@@ -5,8 +5,8 @@
   "pip_spec": "ovos-skill-andersen-tales",
   "license": "GPL-3.0-or-later",
   "author": "andlo",
-  "name": "Andersen Tales (provider)",
-  "description": "Hans Christian Andersen fairy tales provider for ovos-common-reading-pipeline-plugin. No standalone voice interface.",
+  "name": "Fiabe di Andersen (fornitore)",
+  "description": "Fiabe di Hans Christian Andersen, fornitore per ovos-common-reading-pipeline-plugin. Nessuna interfaccia vocale autonoma.",
   "examples": [],
   "tags": ["entertainment", "stories", "fairytales", "andersen", "provider"],
   "icon": "https://raw.githubusercontent.com/andlo/ovos-skill-andersen-tales/main/story-512.png"

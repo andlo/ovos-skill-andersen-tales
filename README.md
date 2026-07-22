@@ -33,11 +33,24 @@ clear message if the language isn't supported, rather than silently
 serving English (or any other) content. Set your device to one of the 7
 supported languages to use this provider.
 
+**Author/collection name and collection_hint aliases are also
+per-language**, not hardcoded English - a Danish device announces
+"H.C. Andersen" / "H.C. Andersens Eventyr" instead of the English
+"Hans Christian Andersen" / "Andersen's Fairy Tales". See
+`locale/<lang>/collection.voc` (aliases) and
+`locale/<lang>/collection_meta.json` (author/collection name), loaded
+via OVOS's own resource file resolution rather than Python constants -
+see [ovos-common-reading-pipeline-plugin#26](https://github.com/andlo/ovos-common-reading-pipeline-plugin/issues/26)
+for the full reasoning. This also means every supported language has
+its own `locale/<lang>/skill.json`, so the Skills Store can see this
+provider genuinely supports 7 languages, not just English.
+
 ## Collection hints
 
-Responds to `collection_hint` values like "andersen", "hans christian
-andersen", "h c andersen", "h.c. andersen", matched fuzzily (see
-`COLLECTION_ALIASES` in `__init__.py`).
+Responds to `collection_hint` values in the *device's own language* -
+e.g. "andersen"/"hans christian andersen" on English, "andersen"/"h.c.
+andersen" on Danish - matched fuzzily against that language's own alias
+list (see `locale/<lang>/collection.voc`).
 
 ## Content type
 
