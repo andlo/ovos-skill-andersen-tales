@@ -9,9 +9,8 @@
   "description": "Hans Christian Andersen fairy tales provider for ovos-common-reading-pipeline-plugin. No standalone voice interface.",
   "examples": [
     "Tell me a story from andersen",
-    "Read me a fairy tale from hans christian andersen",
-    "Read me the story about the little mermaid",
-    "Tell me a story from hans andersen"
+    "Tell me the story about the little mermaid",
+    "Can you tell me a fairytale from hans christian andersen"
   ],
   "tags": [
     "entertainment",

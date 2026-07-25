@@ -9,7 +9,7 @@
   "description": "H.C. Andersens eventyr, udbyder til ovos-common-reading-pipeline-plugin. Ingen selvstændig stemmegrænseflade.",
   "examples": [
     "Fortæl mig en historie fra andersen",
-    "Læs mig et eventyr fra hans christian andersen"
+    "Fortæl mig historien om den lille havfrue"
   ],
   "tags": [
     "entertainment",
