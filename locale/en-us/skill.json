@@ -7,7 +7,18 @@
   "author": "andlo",
   "name": "Andersen Tales (provider)",
   "description": "Hans Christian Andersen fairy tales provider for ovos-common-reading-pipeline-plugin. No standalone voice interface.",
-  "examples": [],
-  "tags": ["entertainment", "stories", "fairytales", "andersen", "provider"],
+  "examples": [
+    "Tell me a story from andersen",
+    "Read me a fairy tale from hans christian andersen",
+    "Read me the story about the little mermaid",
+    "Tell me a story from hans andersen"
+  ],
+  "tags": [
+    "entertainment",
+    "stories",
+    "fairytales",
+    "andersen",
+    "provider"
+  ],
   "icon": "https://raw.githubusercontent.com/andlo/ovos-skill-andersen-tales/main/story-512.png"
 }

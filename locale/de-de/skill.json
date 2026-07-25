@@ -7,7 +7,16 @@
   "author": "andlo",
   "name": "Andersens Märchen (Anbieter)",
   "description": "Märchen von Hans Christian Andersen, Anbieter für ovos-common-reading-pipeline-plugin. Keine eigenständige Sprachschnittstelle.",
-  "examples": [],
-  "tags": ["entertainment", "stories", "fairytales", "andersen", "provider"],
+  "examples": [
+    "Erzähl mir eine Geschichte von andersen",
+    "Lies mir eine Geschichte von hans christian andersen"
+  ],
+  "tags": [
+    "entertainment",
+    "stories",
+    "fairytales",
+    "andersen",
+    "provider"
+  ],
   "icon": "https://raw.githubusercontent.com/andlo/ovos-skill-andersen-tales/main/story-512.png"
 }

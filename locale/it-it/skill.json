@@ -7,7 +7,16 @@
   "author": "andlo",
   "name": "Fiabe di Andersen (fornitore)",
   "description": "Fiabe di Hans Christian Andersen, fornitore per ovos-common-reading-pipeline-plugin. Nessuna interfaccia vocale autonoma.",
-  "examples": [],
-  "tags": ["entertainment", "stories", "fairytales", "andersen", "provider"],
+  "examples": [
+    "Raccontami una storia di andersen",
+    "Leggimi una storia di hans christian andersen"
+  ],
+  "tags": [
+    "entertainment",
+    "stories",
+    "fairytales",
+    "andersen",
+    "provider"
+  ],
   "icon": "https://raw.githubusercontent.com/andlo/ovos-skill-andersen-tales/main/story-512.png"
 }
